@@ -22,11 +22,18 @@ app.use('/', IndexRouter);
 app.use(FacebookRouter); // เพิ่มบรรทัดนี้เพื่อ mount FacebookController
 
 // Start the server
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
 
-export default app;
+server.on('error', (err: any) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`Port ${PORT} is already in use. Please stop the other process or use a different port.`);
+    process.exit(1);
+  } else {
+    throw err;
+  }
+});
 
 // แก้ไขปัญหา:
 // 1. Cannot find module './controllers/IndexController'
