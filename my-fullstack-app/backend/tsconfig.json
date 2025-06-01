@@ -2,10 +2,10 @@
   "compilerOptions": {
     "target": "ES6",
     "module": "CommonJS",
-    "outDir": "dist",
-    "rootDir": "src",
-    "strict": true,
-    "esModuleInterop": true
+    "outDir": "dist",         // ให้ build ไปที่ dist/
+    "rootDir": "src",         // src เป็น root ของ TypeScript
+    "esModuleInterop": true,
+    "strict": true
   },
   "include": ["src"]
 }
