@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
-    "target": "ES6",
-    "module": "CommonJS",
-    "outDir": "dist",         // ให้ build ไปที่ dist/
-    "rootDir": "src",         // src เป็น root ของ TypeScript
-    "esModuleInterop": true,
-    "strict": true
+    "target": "ES6", // กำหนดให้แปลง TypeScript เป็น JavaScript เวอร์ชัน ES6
+    "module": "CommonJS", // ใช้ระบบโมดูลแบบ CommonJS (เหมาะกับ Node.js)
+    "outDir": "./dist", // ไฟล์ที่คอมไพล์แล้วจะถูกเก็บไว้ในโฟลเดอร์ dist
+    "rootDir": "src", // โฟลเดอร์ src เป็น root ของไฟล์ TypeScript
+    "esModuleInterop": true, // อนุญาตให้นำเข้าโมดูล ES6 ได้ง่ายขึ้น
+    "strict": true // เปิดโหมด strict เพื่อความปลอดภัยของโค้ด
   },
-  "include": ["src"]
+  "include": ["src"] // ให้คอมไพล์เฉพาะไฟล์ในโฟลเดอร์ src
 }
