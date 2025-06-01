@@ -12,9 +12,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Database connection
-mongoose.connect('mongodb://localhost:27017/mydatabase')
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.error('MongoDB connection error:', err));
+// --- หากไม่ต้องการใช้ MongoDB หรือยังไม่ได้รัน MongoDB ให้ comment โค้ดนี้ชั่วคราว ---
+// mongoose.connect('mongodb://localhost:27017/mydatabase')
+//   .then(() => console.log('MongoDB connected'))
+//   .catch(err => console.error('MongoDB connection error:', err));
 
 // Routes
 app.use('/', IndexRouter);

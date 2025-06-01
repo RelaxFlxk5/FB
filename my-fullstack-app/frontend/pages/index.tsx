@@ -176,3 +176,18 @@ const btnStyle: React.CSSProperties = {
   boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
   letterSpacing: 0.5,
 };
+
+// หมายเหตุสำหรับการ deploy ด้วย Vercel (Next.js/React):
+// 1. ตรวจสอบว่าไฟล์ frontend มีไฟล์ vercel.json (optional) และ package.json ที่ถูกต้อง
+// 2. ตั้งค่า Environment Variables ใน Vercel Dashboard (เช่น NEXT_PUBLIC_API_URL, FACEBOOK_CLIENT_ID, ฯลฯ)
+// 3. เปลี่ยน redirectUri ให้ตรงกับโดเมน production ของ Vercel เช่น
+//    const redirectUri = encodeURIComponent('https://your-vercel-domain.vercel.app/auth/facebook/callback');
+// 4. เพิ่มโดเมน production ใน Facebook Developer Console > OAuth Redirect URIs และ Allowed Domains
+// 5. git push โค้ดขึ้น GitHub แล้วเชื่อมต่อกับ Vercel (หรือใช้ Vercel CLI)
+// 6. Vercel จะ build และ deploy อัตโนมัติ
+
+// หมายเหตุ: โปรเจคนี้เป็น Next.js (React Framework) ใช้สำหรับสร้าง Web Application แบบ Fullstack
+// - โฟลเดอร์ frontend: เป็น Next.js (pages, API routes, SSR/CSR ได้)
+// - โฟลเดอร์ backend: เป็น Express/Node.js API (TypeScript)
+// - เหมาะกับการ deploy บน Vercel (frontend) และ backend แยก (เช่น Render, Railway, หรือ VPS)
+// - รองรับ OAuth, REST API, และเชื่อมต่อกับ Facebook/Meta API

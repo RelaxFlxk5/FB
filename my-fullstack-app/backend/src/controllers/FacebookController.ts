@@ -31,7 +31,6 @@ router.post('/api/facebook/cta', async (req, res) => {
 
 // POST /api/create-page-cta - alias สำหรับ /api/facebook/cta (รองรับ frontend เดิม)
 router.post('/api/create-page-cta', async (req, res) => {
-  // รองรับทั้ง fbPageId และ pageId (สำหรับ frontend ที่ส่ง pageId)
   const fbPageId = req.body.pageId ?? req.body.fbPageId;
   const bookingUrl = req.body.bookingUrl;
   const pageAccessToken = req.body.pageAccessToken;
@@ -66,7 +65,6 @@ router.post('/api/create-page-cta', async (req, res) => {
     );
     return res.status(200).json({ success: true, fbResponse: response.data });
   } catch (err: any) {
-    // เพิ่ม log สำหรับ debug
     console.error('Facebook API error:', err?.response?.data || err);
     return res.status(500).json({ error: err?.response?.data?.error?.message || 'เกิดข้อผิดพลาด' });
   }
