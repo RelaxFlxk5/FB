@@ -5,17 +5,21 @@
   "scripts": {
     "dev": "ts-node-dev src/app.ts",
     "build": "tsc",
-"start": "node dist/app.js"
+    "start": "node dist/app.js"
   },
   "dependencies": {
-    "axios": "^1.6.8",
+    "axios": "^1.9.0",
     "body-parser": "^1.20.3",
+    "dotenv": "^16.0.3",
     "express": "^4.21.2",
-    "mongoose": "^8.3.5",
+    "mongoose": "^8.15.1",
     "node-fetch": "^2.6.7"
   },
   "devDependencies": {
-    "@types/express": "^4.17.11",
+    "@types/axios": "^0.9.36",
+    "@types/body-parser": "^1.19.5",
+    "@types/express": "^4.17.22",
+    "@types/mongoose": "^5.11.96",
     "@types/node": "^22.15.29",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
