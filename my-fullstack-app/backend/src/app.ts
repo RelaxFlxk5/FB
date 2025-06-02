@@ -5,7 +5,7 @@ import { router as IndexRouter } from './controllers/IndexController';
 import { router as FacebookRouter } from './controllers/FacebookController';
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 4000;
 
 // Middleware
 app.use(bodyParser.json());
@@ -20,6 +20,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Routes
 app.use('/', IndexRouter);
 app.use(FacebookRouter); // เพิ่มบรรทัดนี้เพื่อ mount FacebookController
+
+app.get('/', (req, res) => {
+  res.send('Backend is running');
+});
 
 // Start the server
 const server = app.listen(PORT, () => {
