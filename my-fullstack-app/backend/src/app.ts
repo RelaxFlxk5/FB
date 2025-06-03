@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
+import cors from 'cors'; // เพิ่มบรรทัดนี้
 import { router as IndexRouter } from './controllers/IndexController';
 import { router as FacebookRouter } from './controllers/FacebookController';
 
@@ -8,6 +9,10 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 // Middleware
+app.use(cors({
+  origin: 'https://fb-fc2o.onrender.com', // หรือใส่ origin ที่ต้องการ เช่น ['http://localhost:3000', 'https://your-frontend.vercel.app']
+  credentials: true,
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
