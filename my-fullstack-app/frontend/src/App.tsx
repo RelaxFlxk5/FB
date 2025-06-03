@@ -110,15 +110,18 @@ export default function App() {
                     </button>
                   </form>
                 )}
+                {/* Divider line before social login buttons */}
+                <hr style={{ margin: '24px 0', border: 0, borderTop: '1px solid #eee' }} />
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
                   <button
                     style={{ ...btnStyle, background: '#1877f2', color: '#fff' }}
-                    onClick={() => {
-                      const clientId = '237505309262020';
-                      const redirectUri = encodeURIComponent('https://0bbf6dfm-3000.asse.devtunnels.ms/auth/facebook/callback');
-                      const scope = 'email,public_profile,pages_manage_metadata,pages_read_engagement,pages_manage_engagement';
-                      const fbAuthUrl = `https://www.facebook.com/v19.0/dialog/oauth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code&auth_type=rerequest`;
-                      window.location.href = fbAuthUrl;
+                    onClick={async () => {
+                      // POST to backend to get Facebook OAuth URL, then redirect
+                      const res = await fetch('/api/auth/facebook', { method: 'POST' });
+                      const data = await res.json();
+                      if (data.url) {
+                        window.location.href = data.url;
+                      }
                     }}
                   >
                     📘 Login with Facebook (Meta OAuth)
