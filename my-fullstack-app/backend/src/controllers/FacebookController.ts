@@ -70,6 +70,17 @@ router.post('/api/create-page-cta', async (req, res) => {
   }
 });
 
+// POST /api/auth/facebook - Generate Facebook OAuth URL and return to frontend
+router.post('/api/auth/facebook', (req, res) => {
+  // You can receive data from req.body if needed (e.g., state, custom params)
+  const clientId = '237505309262020';
+  const redirectUri = encodeURIComponent('https://0bbf6dfm-3000.asse.devtunnels.ms/auth/facebook/callback');
+  const scope = 'email,public_profile,pages_manage_metadata,pages_read_engagement,pages_manage_engagement';
+  const fbAuthUrl = `https://www.facebook.com/v19.0/dialog/oauth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code&auth_type=rerequest`;
+  // Respond with the URL for the frontend to redirect
+  res.json({ url: fbAuthUrl });
+});
+
 // GET /api/facebook/health - สำหรับ health check
 router.get('/api/facebook/health', (req, res) => {
   res.send('Facebook API controller is ready');
