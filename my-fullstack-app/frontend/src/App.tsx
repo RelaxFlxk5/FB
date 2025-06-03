@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 // import SystemUI from './components/SystemUI';
+import FacebookCallback from './pages/FacebookCallback';
 
 
 export default function App() {
@@ -175,6 +176,7 @@ export default function App() {
             </div>
           }
         />
+        <Route path="/auth/facebook/callback" element={<FacebookCallback />} />
       </Routes>
     </Router>
   );
@@ -189,8 +191,6 @@ const btnStyle: React.CSSProperties = {
   color: '#222',
   fontWeight: 500,
   transition: 'background 0.2s',
-  cursor: 'pointer',
-  marginBottom: 0,
   marginTop: 0,
   boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
   letterSpacing: 0.5,
