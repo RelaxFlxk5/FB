@@ -10,8 +10,7 @@ const PORT = process.env.PORT || 4000;
 
 // Middleware
 app.use(cors({
-  origin: 'https://fb-fc2o.onrender.com', // หรือใส่ origin ที่ต้องการ เช่น ['http://localhost:3000', 'https://your-frontend.vercel.app']
-  credentials: true,
+  origin: ['https://fb-fc2o.onrender.com'], // หรือใส่ origin ที่ต้องการ เช่น ['http://localhost:3000', 'https://your-frontend.vercel.app']
 }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
