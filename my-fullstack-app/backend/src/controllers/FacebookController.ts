@@ -85,3 +85,23 @@ router.post('/api/auth/facebook', (req, res) => {
 router.get('/api/facebook/health', (req, res) => {
   res.send('Facebook API controller is ready');
 });
+
+// GET /api/verify-webhook - สำหรับ Facebook Webhook Verification
+router.get('/api/verify-webhook', (req, res) => {
+  const VERIFY_TOKEN = process.env.FB_VERIFY_TOKEN || 'EAADYAoOXQMQBOxmZBZA8mX6Y1o2YSNItRF2s2ZBhcs7ICUUNcU7Gf1sq8YYmnJszsII5qFOnKm1hXexbvby5ExDfqA4tLDAtPhjyS00YIph6PgvZBhbenYVEYKkAfgNAqcGhaV1kJF1fVZB1vibwzrmFgbLVOMy9km77Sg0KKC6IuNO5qjhWLMlfoZC85fy4bUDzkindQ2NBX7zPUj'; // ตั้งค่าใน .env หรือใส่ตรงนี้
+
+  const mode = req.query['hub.mode'];
+  const token = req.query['hub.verify_token'];
+  const challenge = req.query['hub.challenge'];
+
+  if (mode && token) {
+    if (mode && token === VERIFY_TOKEN) {
+      console.log('WEBHOOK_VERIFIED');
+      res.status(200).send(challenge);
+    } else {
+      res.sendStatus(403);
+    }
+  } else {
+    res.sendStatus(400);
+  }
+});
