@@ -185,3 +185,27 @@ router.post('/api/facebook/list-chats', async (req, res) => {
     return res.status(500).json({ error: err?.response?.data?.error?.message || 'เกิดข้อผิดพลาด' });
   }
 });
+
+// ...existing code...
+
+// POST /api/facebook/conversation-messages - ดึงข้อความใน conversation
+router.post('/api/facebook/conversation-messages', async (req, res) => {
+  const { conversationId, pageAccessToken } = req.body;
+  if (!conversationId || !pageAccessToken) {
+    return res.status(400).json({ error: 'conversationId และ pageAccessToken จำเป็นต้องมี' });
+  }
+  try {
+    const url = `https://graph.facebook.com/v19.0/${conversationId}/messages`;
+    const response = await axios.get(url, {
+      params: {
+        access_token: pageAccessToken,
+        fields: 'id,from,message,created_time',
+        limit: 50,
+      },
+    });
+    const data = response.data as { data: any[] };
+    return res.status(200).json({ success: true, messages: data.data });
+  } catch (err: any) {
+    return res.status(500).json({ error: err?.response?.data?.error?.message || 'เกิดข้อผิดพลาด' });
+  }
+});
