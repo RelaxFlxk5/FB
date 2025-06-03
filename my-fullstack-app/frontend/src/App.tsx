@@ -117,7 +117,7 @@ export default function App() {
                     style={{ ...btnStyle, background: '#1877f2', color: '#fff' }}
                     onClick={async () => {
                       // POST to backend to get Facebook OAuth URL, then redirect
-                      const res = await fetch('https://fb-fc2o.onrender.com/api/auth/facebook', { method: 'POST' });
+                      const res = await fetch('/api/auth/facebook', { method: 'POST' });
                       const data = await res.json();
                       if (data.url) {
                         window.location.href = data.url;
