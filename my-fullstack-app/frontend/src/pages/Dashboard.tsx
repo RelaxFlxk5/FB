@@ -1,0 +1,119 @@
+import React, { useState } from 'react';
+
+const mockShops = [
+  { id: 'shop1', name: 'ร้านกาแฟ A', fbPage: 'Page A', fbPageId: '1234567890' },
+  { id: 'shop2', name: 'ร้านอาหาร B', fbPage: 'Page B', fbPageId: '2345678901' },
+];
+
+const Dashboard: React.FC = () => {
+  const [selectedShop, setSelectedShop] = useState<string | null>(null);
+  const [bookingUrl, setBookingUrl] = useState('');
+  const [pageAccessToken, setPageAccessToken] = useState('');
+  const [result, setResult] = useState<string | null>(null);
+
+  const handleSetCTA = async () => {
+    if (!selectedShop) return;
+    const shop = mockShops.find(s => s.id === selectedShop);
+    if (!shop) return;
+    setResult('กำลังตั้งค่าปุ่ม...');
+    try {
+      const res = await fetch('https://fb-fc2o.onrender.com/api/facebook/cta', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fbPageId: shop.fbPageId,
+          bookingUrl,
+          pageAccessToken,
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setResult('✅ ตั้งค่าปุ่ม Booking Now สำเร็จ');
+      } else {
+        setResult('❌ ' + (data.error || 'เกิดข้อผิดพลาด'));
+      }
+    } catch (e) {
+      setResult('❌ ไม่สามารถเชื่อมต่อ API ได้');
+    }
+  };
+
+  return (
+    <div style={{ maxWidth: 700, margin: '40px auto', fontFamily: 'Inter, Arial, sans-serif' }}>
+      <h1>Dashboard</h1>
+      <h2>เลือกร้านค้า (Shop) และ Facebook Page</h2>
+      <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: 16 }}>
+        <thead>
+          <tr style={{ background: '#f5f5f5' }}>
+            <th style={{ padding: 8, border: '1px solid #ddd' }}>ร้านค้า</th>
+            <th style={{ padding: 8, border: '1px solid #ddd' }}>Facebook Page</th>
+            <th style={{ padding: 8, border: '1px solid #ddd' }}>Page ID</th>
+            <th style={{ padding: 8, border: '1px solid #ddd' }}>เลือก</th>
+          </tr>
+        </thead>
+        <tbody>
+          {mockShops.map(shop => (
+            <tr key={shop.id}>
+              <td style={{ padding: 8, border: '1px solid #ddd' }}>{shop.name}</td>
+              <td style={{ padding: 8, border: '1px solid #ddd' }}>{shop.fbPage}</td>
+              <td style={{ padding: 8, border: '1px solid #ddd' }}>{shop.fbPageId}</td>
+              <td style={{ padding: 8, border: '1px solid #ddd' }}>
+                <button
+                  style={{
+                    background: selectedShop === shop.id ? '#1976d2' : '#eee',
+                    color: selectedShop === shop.id ? '#fff' : '#333',
+                    border: 'none',
+                    padding: '6px 14px',
+                    borderRadius: 4,
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => setSelectedShop(shop.id)}
+                >
+                  {selectedShop === shop.id ? 'เลือกแล้ว' : 'เลือก'}
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {selectedShop && (
+        <div style={{ marginTop: 24, marginBottom: 24 }}>
+          <h3>ตั้งค่าปุ่ม Booking Now สำหรับร้าน {mockShops.find(s => s.id === selectedShop)?.name}</h3>
+          <input
+            type="text"
+            placeholder="Booking URL (ลิงก์จองคิว)"
+            value={bookingUrl}
+            onChange={e => setBookingUrl(e.target.value)}
+            style={{ width: 320, padding: 8, marginRight: 8, borderRadius: 4, border: '1px solid #ccc' }}
+          />
+          <input
+            type="text"
+            placeholder="Page Access Token"
+            value={pageAccessToken}
+            onChange={e => setPageAccessToken(e.target.value)}
+            style={{ width: 320, padding: 8, marginRight: 8, borderRadius: 4, border: '1px solid #ccc', marginTop: 8 }}
+          />
+          <br />
+          <button
+            style={{
+              marginTop: 12,
+              padding: '10px 28px',
+              fontWeight: 'bold',
+              background: '#43a047',
+              color: '#fff',
+              border: 'none',
+              borderRadius: 4,
+              cursor: bookingUrl && pageAccessToken ? 'pointer' : 'not-allowed',
+            }}
+            disabled={!bookingUrl || !pageAccessToken}
+            onClick={handleSetCTA}
+          >
+            ตั้งค่าปุ่ม Booking Now
+          </button>
+          {result && <div style={{ marginTop: 16 }}>{result}</div>}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Dashboard;

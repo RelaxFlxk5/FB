@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 // import SystemUI from './components/SystemUI';
 import FacebookCallback from './pages/FacebookCallback';
+import Dashboard from './pages/Dashboard';
 
 
 export default function App() {
@@ -14,10 +15,7 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        <Route
-          path="/dashboard"
-          // element={<SystemUI />}
-        />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route
           path="/"
           element={
