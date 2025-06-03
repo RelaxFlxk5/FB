@@ -74,7 +74,7 @@ router.post('/api/create-page-cta', async (req, res) => {
 router.post('/api/auth/facebook', (req, res) => {
   // You can receive data from req.body if needed (e.g., state, custom params)
   const clientId = '237505309262020';
-  const frontendBaseUrl = process.env.FRONTEND_BASE_URL || 'https://fb-cju02hjp5-relaxflxk5s-projects.vercel.app';
+  const frontendBaseUrl = process.env.FRONTEND_BASE_URL || 'https://fb-theta-one.vercel.app';
   const redirectUri = encodeURIComponent(`${frontendBaseUrl}/auth/facebook/callback`);
   const scope = 'email,public_profile,pages_manage_metadata,pages_read_engagement,pages_manage_engagement';
   const fbAuthUrl = `https://www.facebook.com/v19.0/dialog/oauth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code&auth_type=rerequest`;
