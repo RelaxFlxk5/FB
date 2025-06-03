@@ -11,7 +11,7 @@ const FacebookCallback: React.FC = () => {
     const error = params.get('error');
 
     if (error) {
-      alert('Facebook login failed: ' + error);
+    //   alert('Facebook login failed: ' + error);
       navigate('/');
       return;
     }
@@ -30,16 +30,16 @@ const FacebookCallback: React.FC = () => {
             // สำเร็จ: redirect ไป dashboard หรือเก็บ token ตามต้องการ
             navigate('/dashboard');
           } else {
-            alert('Login failed: ' + (data.error || 'Unknown error'));
+            // alert('Login failed: ' + (data.error || 'Unknown error'));
             navigate('/');
           }
         })
         .catch(() => {
-          alert('เกิดข้อผิดพลาด');
+        //   alert('เกิดข้อผิดพลาด');
           navigate('/');
         });
     } else {
-      alert('No code found in callback');
+    //   alert('No code found in callback');
       navigate('/');
     }
   }, [navigate]);
