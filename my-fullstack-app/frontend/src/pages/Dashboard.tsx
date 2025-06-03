@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 
 const mockShops = [
-  { id: 'shop1', name: 'ร้านกาแฟ A', fbPage: 'Page A', fbPageId: '1234567890' },
-  { id: 'shop2', name: 'ร้านอาหาร B', fbPage: 'Page B', fbPageId: '2345678901' },
+  { id: 'shop1', name: 'test A', fbPage: 'Betaskthai Dev ', fbPageId: '215721771615805' },
 ];
 
 const Dashboard: React.FC = () => {
