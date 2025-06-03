@@ -82,6 +82,43 @@ router.post('/api/auth/facebook', (req, res) => {
   res.json({ url: fbAuthUrl });
 });
 
+// POST /api/auth/facebook/callback - รับ code แล้วแลก access token
+router.post('/api/auth/facebook/callback', async (req, res) => {
+  const code = req.body.code;
+  if (!code) {
+    return res.status(400).json({ error: 'Missing code' });
+  }
+
+  const clientId = '237505309262020';
+  const clientSecret = process.env.FB_CLIENT_SECRET || '90800acafa3015637be435006fc7d9d5';
+  const frontendBaseUrl = process.env.FRONTEND_BASE_URL || 'https://fb-theta-one.vercel.app';
+  const redirectUri = `${frontendBaseUrl}/auth/facebook/callback`;
+
+  try {
+    // ขอ access token จาก Facebook
+    const tokenRes = await axios.get('https://graph.facebook.com/v19.0/oauth/access_token', {
+      params: {
+        client_id: clientId,
+        client_secret: clientSecret,
+        redirect_uri: redirectUri,
+        code,
+      },
+    });
+
+    const accessToken = (tokenRes.data as { access_token: string }).access_token;
+
+    // (Optional) ดึงข้อมูล user เพิ่มเติม
+    // const userRes = await axios.get('https://graph.facebook.com/me', {
+    //   params: { access_token: accessToken, fields: 'id,name,email' },
+    // });
+
+    // ส่งกลับ frontend (หรือ set cookie/session ตามต้องการ)
+    res.json({ success: true, accessToken /*, user: userRes.data */ });
+  } catch (err: any) {
+    res.status(500).json({ error: err?.response?.data?.error?.message || 'Facebook token exchange failed' });
+  }
+});
+
 // GET /api/facebook/health - สำหรับ health check
 router.get('/api/facebook/health', (req, res) => {
   res.send('Facebook API controller is ready');
