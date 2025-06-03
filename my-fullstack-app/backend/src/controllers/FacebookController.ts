@@ -163,3 +163,25 @@ router.post('/api/facebook/create-post', async (req, res) => {
   }
 });
 
+
+// POST /api/facebook/list-chats - ดึงแชท (conversation) จาก Facebook Page (และ IG ถ้าเชื่อม)
+router.post('/api/facebook/list-chats', async (req, res) => {
+  const { fbPageId, pageAccessToken } = req.body;
+  if (!fbPageId || !pageAccessToken) {
+    return res.status(400).json({ error: 'fbPageId และ pageAccessToken จำเป็นต้องมี' });
+  }
+  try {
+    // Facebook Page Inbox (รวม IG Direct ถ้าเพจเชื่อม IG)
+    const url = `https://graph.facebook.com/v19.0/${fbPageId}/conversations`;
+    const response = await axios.get<{ data: any[] }>(url, {
+      params: {
+        access_token: pageAccessToken,
+        fields: 'id,snippet,updated_time',
+        limit: 25,
+      },
+    });
+    return res.status(200).json({ success: true, chats: response.data.data });
+  } catch (err: any) {
+    return res.status(500).json({ error: err?.response?.data?.error?.message || 'เกิดข้อผิดพลาด' });
+  }
+});

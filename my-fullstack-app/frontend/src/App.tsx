@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 // import SystemUI from './components/SystemUI';
 import FacebookCallback from './pages/FacebookCallback';
 import Dashboard from './pages/Dashboard';
+import ChatManager from './pages/Message';
 
 
 export default function App() {
@@ -16,6 +17,7 @@ export default function App() {
     <Router>
       <Routes>
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/chat-manager" element={<ChatManager />} />
         <Route
           path="/"
           element={
