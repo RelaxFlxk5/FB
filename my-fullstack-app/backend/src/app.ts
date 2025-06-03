@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 4000;
 
 // Middleware
 app.use(cors({
-  origin: ['https://fb-cju02hjp5-relaxflxk5s-projects.vercel.app', 'localhost:3000'],
+  origin: ['https://fb-cju02hjp5-relaxflxk5s-projects.vercel.app', 'localhost:3000','https://fb-theta-one.vercel.app/'],
   // ถ้าใช้ cookie หรือ session ต้องตั้งค่า credentials เป็น true
   credentials: true,
 }));
