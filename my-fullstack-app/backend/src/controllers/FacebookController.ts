@@ -143,3 +143,23 @@ router.get('/api/verify-webhook', (req, res) => {
     res.sendStatus(400);
   }
 });
+
+// POST /api/facebook/create-post - โพสต์ข้อความบน Facebook Page
+router.post('/api/facebook/create-post', async (req, res) => {
+  const { fbPageId, pageAccessToken, message } = req.body;
+  if (!fbPageId || !pageAccessToken || !message) {
+    return res.status(400).json({ error: 'fbPageId, pageAccessToken และ message จำเป็นต้องมี' });
+  }
+  try {
+    const url = `https://graph.facebook.com/v19.0/${fbPageId}/feed`;
+    const response = await axios.post<{ id: string }>(
+      url,
+      { message },
+      { params: { access_token: pageAccessToken } }
+    );
+    return res.status(200).json({ success: true, postId: response.data.id });
+  } catch (err: any) {
+    return res.status(500).json({ error: err?.response?.data?.error?.message || 'เกิดข้อผิดพลาด' });
+  }
+});
+

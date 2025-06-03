@@ -9,6 +9,9 @@ const Dashboard: React.FC = () => {
   const [bookingUrl, setBookingUrl] = useState('');
   const [pageAccessToken, setPageAccessToken] = useState('');
   const [result, setResult] = useState<string | null>(null);
+  const [tab, setTab] = useState<'cta' | 'post'>('cta');
+  const [postMessage, setPostMessage] = useState('');
+  const [postResult, setPostResult] = useState<string | null>(null);
 
   const handleSetCTA = async () => {
     if (!selectedShop) return;
@@ -33,6 +36,32 @@ const Dashboard: React.FC = () => {
       }
     } catch (e) {
       setResult('❌ ไม่สามารถเชื่อมต่อ API ได้');
+    }
+  };
+
+  const handleCreatePost = async () => {
+    if (!selectedShop) return;
+    const shop = mockShops.find(s => s.id === selectedShop);
+    if (!shop) return;
+    setPostResult('กำลังโพสต์...');
+    try {
+      const res = await fetch('https://fb-fc2o.onrender.com/api/facebook/create-post', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fbPageId: shop.fbPageId,
+          pageAccessToken,
+          message: postMessage,
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setPostResult('✅ โพสต์สำเร็จ! Post ID: ' + data.postId);
+      } else {
+        setPostResult('❌ ' + (data.error || 'เกิดข้อผิดพลาด'));
+      }
+    } catch (e) {
+      setPostResult('❌ ไม่สามารถเชื่อมต่อ API ได้');
     }
   };
 
@@ -76,39 +105,110 @@ const Dashboard: React.FC = () => {
       </table>
       {selectedShop && (
         <div style={{ marginTop: 24, marginBottom: 24 }}>
-          <h3>ตั้งค่าปุ่ม Booking Now สำหรับร้าน {mockShops.find(s => s.id === selectedShop)?.name}</h3>
-          <input
-            type="text"
-            placeholder="Booking URL (ลิงก์จองคิว)"
-            value={bookingUrl}
-            onChange={e => setBookingUrl(e.target.value)}
-            style={{ width: 320, padding: 8, marginRight: 8, borderRadius: 4, border: '1px solid #ccc' }}
-          />
-          <input
-            type="text"
-            placeholder="Page Access Token"
-            value={pageAccessToken}
-            onChange={e => setPageAccessToken(e.target.value)}
-            style={{ width: 320, padding: 8, marginRight: 8, borderRadius: 4, border: '1px solid #ccc', marginTop: 8 }}
-          />
-          <br />
-          <button
-            style={{
-              marginTop: 12,
-              padding: '10px 28px',
-              fontWeight: 'bold',
-              background: '#43a047',
-              color: '#fff',
-              border: 'none',
-              borderRadius: 4,
-              cursor: bookingUrl && pageAccessToken ? 'pointer' : 'not-allowed',
-            }}
-            disabled={!bookingUrl || !pageAccessToken}
-            onClick={handleSetCTA}
-          >
-            ตั้งค่าปุ่ม Booking Now
-          </button>
-          {result && <div style={{ marginTop: 16 }}>{result}</div>}
+          <div style={{ display: 'flex', gap: 16, marginBottom: 24 }}>
+            <button
+              style={{
+                padding: '8px 24px',
+                borderRadius: 4,
+                border: 'none',
+                background: tab === 'cta' ? '#1976d2' : '#eee',
+                color: tab === 'cta' ? '#fff' : '#333',
+                fontWeight: tab === 'cta' ? 'bold' : 'normal',
+                cursor: 'pointer',
+              }}
+              onClick={() => setTab('cta')}
+            >
+              ตั้งค่าปุ่ม Booking Now
+            </button>
+            <button
+              style={{
+                padding: '8px 24px',
+                borderRadius: 4,
+                border: 'none',
+                background: tab === 'post' ? '#1976d2' : '#eee',
+                color: tab === 'post' ? '#fff' : '#333',
+                fontWeight: tab === 'post' ? 'bold' : 'normal',
+                cursor: 'pointer',
+              }}
+              onClick={() => setTab('post')}
+            >
+              จัดการโพสต์บนเพจ
+            </button>
+          </div>
+          {tab === 'cta' && (
+            <>
+              <h3>ตั้งค่าปุ่ม Booking Now สำหรับร้าน {mockShops.find(s => s.id === selectedShop)?.name}</h3>
+              <input
+                type="text"
+                placeholder="Booking URL (ลิงก์จองคิว)"
+                value={bookingUrl}
+                onChange={e => setBookingUrl(e.target.value)}
+                style={{ width: 320, padding: 8, marginRight: 8, borderRadius: 4, border: '1px solid #ccc' }}
+              />
+              <input
+                type="text"
+                placeholder="Page Access Token"
+                value={pageAccessToken}
+                onChange={e => setPageAccessToken(e.target.value)}
+                style={{ width: 320, padding: 8, marginRight: 8, borderRadius: 4, border: '1px solid #ccc', marginTop: 8 }}
+              />
+              <br />
+              <button
+                style={{
+                  marginTop: 12,
+                  padding: '10px 28px',
+                  fontWeight: 'bold',
+                  background: '#43a047',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: 4,
+                  cursor: bookingUrl && pageAccessToken ? 'pointer' : 'not-allowed',
+                }}
+                disabled={!bookingUrl || !pageAccessToken}
+                onClick={handleSetCTA}
+              >
+                ตั้งค่าปุ่ม Booking Now
+              </button>
+              {result && <div style={{ marginTop: 16 }}>{result}</div>}
+            </>
+          )}
+          {tab === 'post' && (
+            <>
+              <h3>โพสต์ข้อความบน Facebook Page</h3>
+              <textarea
+                placeholder="ข้อความโพสต์"
+                value={postMessage}
+                onChange={e => setPostMessage(e.target.value)}
+                style={{ width: 400, height: 80, padding: 8, borderRadius: 4, border: '1px solid #ccc' }}
+              />
+              <br />
+              <input
+                type="text"
+                placeholder="Page Access Token"
+                value={pageAccessToken}
+                onChange={e => setPageAccessToken(e.target.value)}
+                style={{ width: 320, padding: 8, marginTop: 8, borderRadius: 4, border: '1px solid #ccc' }}
+              />
+              <br />
+              <button
+                style={{
+                  marginTop: 12,
+                  padding: '10px 28px',
+                  fontWeight: 'bold',
+                  background: '#1976d2',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: 4,
+                  cursor: postMessage && pageAccessToken ? 'pointer' : 'not-allowed',
+                }}
+                disabled={!postMessage || !pageAccessToken}
+                onClick={handleCreatePost}
+              >
+                โพสต์ข้อความ
+              </button>
+              {postResult && <div style={{ marginTop: 16 }}>{postResult}</div>}
+            </>
+          )}
         </div>
       )}
     </div>
