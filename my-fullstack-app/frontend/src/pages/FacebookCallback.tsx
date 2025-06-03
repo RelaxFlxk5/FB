@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import SidebarLayout from '../components/SidebarLayout';
 
 const FacebookCallback: React.FC = () => {
   const navigate = useNavigate();
@@ -45,9 +46,10 @@ const FacebookCallback: React.FC = () => {
   }, [navigate]);
 
   return (
+        <SidebarLayout>
     <div style={{ padding: 40, textAlign: 'center' }}>
       <h2>กำลังเข้าสู่ระบบด้วย Facebook...</h2>
-    </div>
+    </div></SidebarLayout>
   );
 };
 

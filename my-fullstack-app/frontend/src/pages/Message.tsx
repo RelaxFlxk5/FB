@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import SidebarLayout from '../components/SidebarLayout';
 
 const ChatManager: React.FC = () => {
   const [pageAccessToken, setPageAccessToken] = useState('');
@@ -56,6 +57,7 @@ const ChatManager: React.FC = () => {
   };
 
   return (
+        <SidebarLayout>
     <div style={{ maxWidth: 700, margin: '40px auto', fontFamily: 'Inter, Arial, sans-serif' }}>
       <h1>จัดการแชทรวม Facebook & IG</h1>
       <input
@@ -134,7 +136,7 @@ const ChatManager: React.FC = () => {
           ) : !convLoading && <div>ไม่มีข้อความ</div>}
         </div>
       )}
-    </div>
+    </div></SidebarLayout>
   );
 };
 
