@@ -119,6 +119,7 @@ export default function App() {
                       // POST to backend to get Facebook OAuth URL, then redirect
                       const res = await fetch('https://fb-fc2o.onrender.com/api/auth/facebook', {
                         method: 'POST',
+                          credentials: 'include', // สำคัญ!
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({}) // หรือส่งข้อมูลที่ backend ต้องการ
                       });

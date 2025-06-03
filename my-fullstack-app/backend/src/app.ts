@@ -10,10 +10,20 @@ const PORT = process.env.PORT || 4000;
 
 // Middleware
 app.use(cors({
-  origin: ['https://fb-fc2o.onrender.com','https://fb-theta-one.vercel.app/'], // หรือใส่ origin ที่ต้องการ เช่น ['http://localhost:3000', 'https://your-frontend.vercel.app']
+  origin: ['https://fb-cju02hjp5-relaxflxk5s-projects.vercel.app', 'localhost:3000'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  exposedHeaders: ['Content-Length', 'X-JSON'],
+  // ถ้าใช้ cookie หรือ session ต้องตั้งค่า credentials เป็น true
+  credentials: true,
 }));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Credentials', 'true');
+  next();
+});
 
 // Database connection
 // --- หากไม่ต้องการใช้ MongoDB หรือยังไม่ได้รัน MongoDB ให้ comment โค้ดนี้ชั่วคราว ---
