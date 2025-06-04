@@ -8,6 +8,7 @@ import ChatManager from './pages/Message';
 
 export default function App() {
   const [showEmailForm, setShowEmailForm] = useState(true);
+  const [loadingFb, setLoadingFb] = useState(false);
 
   const handleOAuth = (url: string) => {
     window.location.href = url;
@@ -115,22 +116,33 @@ export default function App() {
                 <hr style={{ margin: '24px 0', border: 0, borderTop: '1px solid #eee' }} />
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
                   <button
-                    style={{ ...btnStyle, background: '#1877f2', color: '#fff' }}
+                    style={{
+                      ...btnStyle,
+                      background: '#1877f2',
+                      color: '#fff',
+                      opacity: loadingFb ? 0.7 : 1,
+                      cursor: loadingFb ? 'not-allowed' : 'pointer',
+                    }}
+                    disabled={loadingFb}
                     onClick={async () => {
-                      // POST to backend to get Facebook OAuth URL, then redirect
-                      const res = await fetch('https://fb-fc2o.onrender.com/api/auth/facebook', {
-                        method: 'POST',
-                          credentials: 'include', // สำคัญ!
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({}) // หรือส่งข้อมูลที่ backend ต้องการ
-                      });
-                      const data = await res.json();
-                      if (data.url) {
-                        window.location.href = data.url;
+                      setLoadingFb(true);
+                      try {
+                        const res = await fetch('https://fb-fc2o.onrender.com/api/auth/facebook', {
+                          method: 'POST',
+                          credentials: 'include',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({}),
+                        });
+                        const data = await res.json();
+                        if (data.url) {
+                          window.location.href = data.url;
+                        }
+                      } finally {
+                        setLoadingFb(false);
                       }
                     }}
                   >
-                    📘 Login with Facebook (Meta OAuth)
+                    {loadingFb ? '⏳ กำลังเชื่อมต่อ...' : '📘 Login with Facebook (Meta OAuth)'}
                   </button>
                   <button
                     style={{
