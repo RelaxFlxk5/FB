@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 const menu = [
   { path: '/dashboard', label: 'Dashboard', icon: '🏠' },
   { path: '/chat-manager', label: 'รวมแชท', icon: '💬' },
-  { path: '/message', label: 'ประวัติแชท', icon: '📜' },
+//   { path: '/message', label: 'ประวัติแชท', icon: '📜' },
   // เพิ่มเมนูอื่นๆ ได้ที่นี่
 ];
 
